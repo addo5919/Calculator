@@ -34,26 +34,39 @@ function operate(operator,a,b) {
 let num1;
 let operator;
 let input=document.querySelector(".display");
-let keys=document.querySelectorAll(".key");
-keys.forEach((key)=>{
-    key.addEventListener("click",(e)=>{
-        let temp=e.target.innerText;
-        if(temp=="+" || temp=="-" || temp=="x" || temp=="/") {
-            num1=Number(input.value);
-            operator=temp;
-            input.value="";
-        }
-        else if(temp=="=") {
-            num1=operate(operator,num1,Number(input.value));
-            input.value=num1;
-        }
-        else if(temp=="C") {
-            input.value="";
-            num1=undefined;
-            operator=undefined;
-        }
-        else {
-            input.value+=temp;
-        }
+let digits=document.querySelectorAll(".digit");
+let operators=document.querySelectorAll(".operator");
+let clear=document.querySelector(".clear");
+let result=document.querySelector("#result");
+
+digits.forEach((digit)=>{
+    digit.addEventListener("click",(e)=>{
+        input.value+=e.target.innerText;
     });
+});
+
+operators.forEach((op)=>{
+    op.addEventListener("click",(e)=>{
+        if(num1==undefined) {  
+            num1=Number(input.value);
+            operator=e.target.innerText;
+            input.value="";
+        }
+        else if(num1!=undefined) {
+            let res=operate(operator,num1,Number(input.value));
+            input.value="";
+            num1=res;
+            operator=e.target.innerText;
+            result.innerText="result: "+res+", currect active operator: "+operator;
+        }
+       
+        
+    });
+});
+
+clear.addEventListener("click",(e)=>{
+    input.value="";
+    num1=undefined;
+    operator=undefined;
+    result.innerText="";
 });
