@@ -1,72 +1,43 @@
-function add(a,b) {
-    return a+b;
-}
 
-function sub(a,b){
-    return a-b;
-}
-
-function mul(a,b) {
-    return a*b;
-}
-
-function div(a,b) {
-    return a/b;
-}
-
-function operate(operator,a,b) {
-    let res;
-    if(operator=="+") {
-        res=add(a,b);
-    }
-    else if(operator=="-") {
-        res=sub(a,b);
-    }
-    else if(operator=="x") {
-        res=mul(a,b);
-    }
-    else if(operator=="/") {
-        res=div(a,b);
-    }
-    return res;
-}
-
-let num1;
-let operator;
-let input=document.querySelector(".display");
+let currNum="";
+let prevNum="";
+let operator="";
 let digits=document.querySelectorAll(".digit");
 let operators=document.querySelectorAll(".operator");
 let clear=document.querySelector(".clear");
-let result=document.querySelector("#result");
+let decimal=document.querySelector(".decimal");
+let equalKey=document.querySelector(".equal");
+let currScreen=document.querySelector(".display2");
+let prevScreen=document.querySelector(".display1");
 
 digits.forEach((digit)=>{
     digit.addEventListener("click",(e)=>{
-        input.value+=e.target.innerText;
+        handleNumber(e.target.innerText);
     });
 });
 
-operators.forEach((op)=>{
-    op.addEventListener("click",(e)=>{
-        if(num1==undefined) {  
-            num1=Number(input.value);
-            operator=e.target.innerText;
-            input.value="";
-        }
-        else if(num1!=undefined) {
-            let res=operate(operator,num1,Number(input.value));
-            input.value="";
-            num1=res;
-            operator=e.target.innerText;
-            result.innerText="result: "+res+", currect active operator: "+operator;
-        }
-       
-        
+function handleNumber(num) {
+    if(currNum.length<=11) {
+    currScreen.innerText+=num;
+    currNum+=num;
+    }
+}
+
+operators.forEach((operator)=>{
+    operator.addEventListener("click",(e)=>{
+        handleOperator(e.target.innerText);
     });
 });
 
-clear.addEventListener("click",(e)=>{
-    input.value="";
-    num1=undefined;
-    operator=undefined;
-    result.innerText="";
+function handleOperator(op) {
+    operator=op;
+    prevNum=currNum;
+    prevScreen.innerText=prevNum+" "+operator
+    currNum="";
+    currScreen.innerText="";
+}
+
+equalKey.addEventListener("click",(e)=>{
+    
 });
+
